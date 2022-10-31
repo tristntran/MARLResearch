@@ -1,0 +1,17 @@
+{
+    "python.testing.pytestArgs": [
+        "-s"
+    ],
+    "editor.rulers": [135],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.lintOnSave": true,
+    "python.linting.pylintArgs": [
+        "--rcfile=setup.cfg",
+        "--max-line-length=135",
+        "--max-attributes=15",
+        "--disable=invalid-name,fixme,import-outside-toplevel,too-many-lines,wrong-import-order,wrong-import-position,import-error,too-many-public-methods,too-many-function-args,logging-fstring-interpolation"
+    ]
+}
