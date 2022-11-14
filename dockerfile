@@ -7,7 +7,9 @@ RUN apt-get install -y \
     gcc \
     g++ \
     lsof \
-    git-lfs
+    git-lfs \
+    cmake \
+    libz-dev
 RUN pip install --upgrade pip
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
