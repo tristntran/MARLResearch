@@ -9,7 +9,8 @@ RUN apt-get install -y \
     lsof \
     git-lfs \
     cmake \
-    libz-dev
+    libz-dev \
+    ffmpeg
 RUN pip install --upgrade pip
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
