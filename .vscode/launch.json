@@ -2,7 +2,9 @@
     "python.testing.pytestArgs": [
         "-s"
     ],
-    "editor.rulers": [135],
+    "editor.rulers": [
+        135
+    ],
     "python.testing.unittestEnabled": false,
     "python.testing.pytestEnabled": true,
     "python.linting.enabled": true,
@@ -13,5 +15,15 @@
         "--max-line-length=135",
         "--max-attributes=15",
         "--disable=invalid-name,fixme,import-outside-toplevel,too-many-lines,wrong-import-order,wrong-import-position,import-error,too-many-public-methods,too-many-function-args,logging-fstring-interpolation"
-    ]
+    ],
+    "configurations": [
+        {
+          "name": "udrl",
+          "type": "python",
+          "request": "launch",
+          "module": "src.udrl",
+          "justMyCode": false,
+          "console": "internalConsole"
+        }
+      ]
 }

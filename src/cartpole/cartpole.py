@@ -55,6 +55,6 @@ class VideoRecorderCallback(BaseCallback):
         return True
 
 
-model = A2C("MlpPolicy", "Breakout-v4", tensorboard_log="runs/", verbose=1)
-video_recorder = VideoRecorderCallback(gym.make("Breakout-v4"), render_freq=5000)
+model = A2C("MlpPolicy", "CartPole-v1", tensorboard_log="runs/", verbose=1)
+video_recorder = VideoRecorderCallback(gym.make("CartPole-v1"), render_freq=5000)
 model.learn(total_timesteps=int(5e4), callback=video_recorder)
