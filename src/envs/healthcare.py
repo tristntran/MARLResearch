@@ -35,7 +35,7 @@ class HealthCareEnv(Env):
         self.period += 1
         self.current_step += 1
         
-        done = False
+        done = self.shocks >= 6
         obs = self._next_obeservation()
         return obs, reward, done, {}
 
