@@ -11,6 +11,7 @@ RUN apt-get install -y \
     cmake \
     libz-dev \
     ffmpeg
+RUN export PYTHONPATH=$PYTHONPATH:./src
 RUN pip install --upgrade pip
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
