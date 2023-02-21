@@ -12,7 +12,7 @@ class HealthCareEnv(Env):
         # Define the action space
         self.action_space = spaces.Box(low=0, high=100, shape=(2,), dtype=np.uint8)
         # Define the observation Space
-        self.observation_space = spaces.Box(low=0, high=100, shape=(3,), dtype=np.uint8)
+        self.observation_space = spaces.Box(low=0, high=100, shape=(4,), dtype=np.uint8)
 
     def reset(self):
         """
@@ -35,9 +35,10 @@ class HealthCareEnv(Env):
         self.savings += 100
         self._take_action(action)
         self.period += 1
-        delay_modifier = self.period/MAX_PERIODS
-        reward = self.joy * delay_modifier if self.valid_action(action) else - ACTION_PENALTY
+        # delay_modifier = self.period/MAX_PERIODS
+        # reward = self.joy * delay_modifier if self.valid_action(action) else - ACTION_PENALTY
         done = self.shocks >= 6 or self.fitness <= 0
+        reward = self.joy if done else 0
         obs = self._next_observation()
         return obs, reward, done, {}
 
@@ -58,7 +59,7 @@ class HealthCareEnv(Env):
         """
         gets the next observation for the plan
         """
-        obs = np.array([self.period, self.savings, self.fitness])
+        obs = np.array([self.period, self.savings, self.fitness, self.shocks])
         return obs
 
     def _take_action(self, action):
@@ -72,4 +73,9 @@ class HealthCareEnv(Env):
         self.shocks += self._get_shocked()
     
     def render(self, reset_params=False):
-        print(f"Fitness {self.fitness}\nJoy {self.joy}\nPeriod{self.period}")
+        print(
+            f"="*8+f"\n"
+            f"Period{self.period}\n"
+            f"Fitness {self.fitness}\n"
+            f"Shocks {self.shocks}\n"
+            f"Joy {self.joy}\n")

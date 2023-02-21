@@ -9,7 +9,7 @@ register(
 )
 env = gym.make("esi_healthcareEnv-v0")
 model = PPO("MlpPolicy", env, verbose=1)
-model.learn(total_timesteps=250)
+model.learn(total_timesteps=25000)
 model.save("healthcare")
 obs = env.reset()
 for i in range(100):
