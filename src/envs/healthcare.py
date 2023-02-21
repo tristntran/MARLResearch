@@ -3,6 +3,7 @@ import numpy as np
 
 MAX_PERIODS = 100
 START_HEALTH = 30
+ACTION_PENALTY = 100
 class HealthCareEnv(Env):
 
     def __init__(self):
@@ -35,10 +36,18 @@ class HealthCareEnv(Env):
         self._take_action(action)
         self.period += 1
         delay_modifier = self.period/MAX_PERIODS
-        reward = self.joy * delay_modifier
+        reward = self.joy * delay_modifier if self.valid_action(action) else - ACTION_PENALTY
         done = self.shocks >= 6 or self.fitness <= 0
         obs = self._next_observation()
         return obs, reward, done, {}
+
+    def valid_action(self, action):
+        """
+        assesses whether or not a valid action is made
+
+        :param action: _description_
+        """
+        return sum(action) <= 100
 
     def _get_shocked(self):
         """.ci.yml"""
