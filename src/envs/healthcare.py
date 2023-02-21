@@ -35,10 +35,10 @@ class HealthCareEnv(Env):
         self.savings += 100
         self._take_action(action)
         self.period += 1
-        # delay_modifier = self.period/MAX_PERIODS
-        # reward = self.joy * delay_modifier if self.valid_action(action) else - ACTION_PENALTY
-        done = self.shocks >= 6 or self.fitness <= 0
-        reward = self.joy if done else 0
+        delay_modifier = self.period/MAX_PERIODS
+        reward = self.joy * delay_modifier if self.valid_action(action) else - ACTION_PENALTY
+        done = self.shocks >= 6 or self.fitness <= 0 or self.period >= MAX_PERIODS
+        # reward = self.joy if done else 0
         obs = self._next_observation()
         return obs, reward, done, {}
 
