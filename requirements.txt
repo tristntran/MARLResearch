@@ -1,3 +1,4 @@
+AutoROM.accept-rom-license
 gym
 stable-baselines3
 stable-baselines3[extra]
