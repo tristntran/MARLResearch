@@ -53,7 +53,7 @@ class HealthCareEnv(Env):
 
         :param action: _description_
         """
-        return sum(action) <= 100
+        return sum(action) <= 1
 
     def _get_shocked(self):
         """.ci.yml"""

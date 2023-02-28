@@ -11,6 +11,7 @@ env = gym.make("esi_healthcareEnv-v0")
 model = PPO("MlpPolicy", env, verbose=1)
 model.learn(total_timesteps=100000)
 model.save("healthcare")
+# model.load("healthcare")
 obs = env.reset()
 done = False
 while not done:
