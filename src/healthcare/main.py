@@ -17,4 +17,5 @@ while not done:
     action, _states = model.predict(obs)
     obs, rewards, done, info = env.step(action)
     env.render()
+    print(rewards)
     print(action)
