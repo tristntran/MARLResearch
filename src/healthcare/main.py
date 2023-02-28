@@ -9,11 +9,12 @@ register(
 )
 env = gym.make("esi_healthcareEnv-v0")
 model = PPO("MlpPolicy", env, verbose=1)
-model.learn(total_timesteps=25000)
+model.learn(total_timesteps=100000)
 model.save("healthcare")
 obs = env.reset()
-for i in range(100):
+done = False
+while not done:
     action, _states = model.predict(obs)
-    obs, rewards, dones, info = env.step(action)
+    obs, rewards, done, info = env.step(action)
     env.render()
     print(action)

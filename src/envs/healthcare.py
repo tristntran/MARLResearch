@@ -11,7 +11,7 @@ class HealthCareEnv(Env):
         """.ci.yml"""
         super(HealthCareEnv, self).__init__()
         # Define the action space
-        self.action_space = spaces.Box(low=0, high=100, shape=(2,), dtype=np.uint8)
+        self.action_space = spaces.Box(low=0, high=1, shape=(2,), dtype=np.uint8)
         # Define the observation Space
         self.observation_space = spaces.Box(low=0, high=100, shape=(4,), dtype=np.uint8)
 
@@ -38,7 +38,7 @@ class HealthCareEnv(Env):
         self.period += 1
         delay_modifier = self.period/MAX_PERIODS
         reward = self.joy * delay_modifier if self.valid_action(action) else - ACTION_PENALTY
-        done = self.shocks >= MAX_SHOCKS or self.fitness <= 0 or self.period >= MAX_PERIODS
+        done = (self.shocks >= MAX_SHOCKS) or (self.fitness <= 0) or (self.period >= MAX_PERIODS)
         # reward = self.joy if done else 0
         obs = self._next_observation()
         return obs, reward, done, {}
@@ -53,7 +53,8 @@ class HealthCareEnv(Env):
 
     def _get_shocked(self):
         """.ci.yml"""
-        pshock = (np.exp(0.02 * self.period)+ np.exp(0.05 * self.shocks - 1.95))*(1-1.2*(self.fitness/(self.fitness + 40)))
+        pshock = (np.exp(0.02 * self.period) + np.exp(0.05 * self.shocks) - 1.95) \
+                    * (1 - 1.2 * (self.fitness/(self.fitness + 40)))
         return np.random.random() <= pshock
 
     def _next_observation(self):
@@ -69,16 +70,20 @@ class HealthCareEnv(Env):
 
         :param action: _description_
         """
-        fitness_spending = action[0]/100 * self.savings
-        joy_spending = action[1]/100 * self.savings
+        fitness_spending = action[0] * self.savings
+        joy_spending = action[1] * self.savings
+        self.savings -= (joy_spending + fitness_spending)
         self.fitness = 2/3 * self.fitness + 0.3 * fitness_spending
         self.joy +=  (1 - self.shocks/MAX_SHOCKS) * joy_spending / (joy_spending + 20)
-        self.shocks += self._get_shocked()
+        if self._get_shocked():
+            self.shocks += 1
+            self.savings -= 10
     
     def render(self, reset_params=False):
         print(
             f"="*8+f"\n"
-            f"Period{self.period}\n"
-            f"Fitness {self.fitness}\n"
-            f"Shocks {self.shocks}\n"
-            f"Joy {self.joy}\n")
+            f"Period: {self.period}\n"
+            f"Fitness: {self.fitness}\n"
+            f"Shocks: {self.shocks}\n"
+            f"Savings: {self.savings}\n"
+            f"Joy: {self.joy}\n")
