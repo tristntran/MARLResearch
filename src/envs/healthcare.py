@@ -3,7 +3,7 @@ import numpy as np
 
 MAX_PERIODS = 100
 START_HEALTH = 30
-ACTION_PENALTY = 100
+ACTION_PENALTY = 10000
 MAX_SHOCKS = 6
 class HealthCareEnv(Env):
 
@@ -22,6 +22,7 @@ class HealthCareEnv(Env):
         self.period = 0
         self.fitness = START_HEALTH
         self.joy = 0
+        self.period_joy = 0
         self.savings = 0
         self.shocks = 0
         return self._next_observation()
@@ -37,9 +38,12 @@ class HealthCareEnv(Env):
         self._take_action(action)
         self.period += 1
         delay_modifier = self.period/MAX_PERIODS
-        reward = self.joy * delay_modifier if self.valid_action(action) else - ACTION_PENALTY
+        reward = self.period_joy if self.valid_action(action) else - ACTION_PENALTY
+        # if self.valid_action(action):
+        #     reward = self.joy if done else 0
+        # else:
+        #     - ACTION_PENALTY
         done = (self.shocks >= MAX_SHOCKS) or (self.fitness <= 0) or (self.period >= MAX_PERIODS)
-        # reward = self.joy if done else 0
         obs = self._next_observation()
         return obs, reward, done, {}
 
@@ -70,11 +74,12 @@ class HealthCareEnv(Env):
 
         :param action: _description_
         """
-        fitness_spending = action[0] * self.savings
-        joy_spending = action[1] * self.savings
+        fitness_spending = max(action[0] * self.savings, 0)
+        joy_spending = max(action[1] * self.savings, 0)
         self.savings -= (joy_spending + fitness_spending)
         self.fitness = 2/3 * self.fitness + 0.3 * fitness_spending
-        self.joy +=  (1 - self.shocks/MAX_SHOCKS) * joy_spending / (joy_spending + 20)
+        self.period_joy = (1 - self.shocks/MAX_SHOCKS) * joy_spending / (joy_spending + 20)
+        self.joy +=  self.period_joy
         if self._get_shocked():
             self.shocks += 1
             self.savings -= 10
