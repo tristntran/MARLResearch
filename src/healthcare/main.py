@@ -10,7 +10,7 @@ register(
 env = gym.make("esi_healthcareEnv-v0")
 model = PPO("MlpPolicy", env, verbose=1,
             learning_rate=1e-2,
-            gamma = 0.95
+            gamma = .9
             )
 model.learn(total_timesteps=100000)
 model.save("healthcare")
