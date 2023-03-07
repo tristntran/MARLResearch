@@ -11,9 +11,9 @@ class HealthCareEnv(Env):
         """.ci.yml"""
         super(HealthCareEnv, self).__init__()
         # Define the action space
-        self.action_space = spaces.Box(low=0, high=1, shape=(2,), dtype=np.uint8)
+        self.action_space = spaces.Box(low=np.array([0.0, 0.0]), high=np.array([1.0, 1.0]), dtype=np.float32)
         # Define the observation Space
-        self.observation_space = spaces.Box(low=0, high=100, shape=(4,), dtype=np.uint8)
+        self.observation_space = spaces.Box(low=0, high=100, shape=(4,), dtype=np.int32)
 
     def reset(self):
         """
@@ -34,15 +34,17 @@ class HealthCareEnv(Env):
         :param action: _description_
         :return: _description_
         """
+        action = np.clip(action, 0, 1)  # clip values to [0, 1] range
+        action /= np.sum(action) if np.sum(action) > 0 else 1  # ensure sum is less than 1
         self.savings += 100
         self._take_action(action)
         self.period += 1
-        delay_modifier = self.period/MAX_PERIODS
-        reward = self.period_joy if self.valid_action(action) else - ACTION_PENALTY
+        reward = self.period_joy
+        # if self.valid_action(action) else - ACTION_PENALTY
         # if self.valid_action(action):
         #     reward = self.joy if done else 0
         # else:
-        #     - ACTION_PENALTY
+        #     reward = - ACTION_PENALTY
         done = (self.shocks >= MAX_SHOCKS) or (self.fitness <= 0) or (self.period >= MAX_PERIODS)
         obs = self._next_observation()
         return obs, reward, done, {}
