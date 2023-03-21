@@ -35,7 +35,7 @@ class HealthCareEnv(Env):
         :return: _description_
         """
         action = np.clip(action, 0, 1)  # clip values to [0, 1] range
-        action /= np.sum(action) if np.sum(action) > 0 else 1  # ensure sum is less than 1
+        action /= np.sum(action) if np.sum(action) > 1 else 1  # ensure sum is less than 1
         self.savings += 100
         self._take_action(action)
         self.period += 1

@@ -4,3 +4,4 @@ stable-baselines3
 stable-baselines3[extra]
 rl_zoo3
 numpy
+tensorflow

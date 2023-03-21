@@ -9,12 +9,13 @@ register(
 )
 env = gym.make("esi_healthcareEnv-v0")
 model = PPO("MlpPolicy", env, verbose=1,
-            learning_rate=1e-2,
-            gamma = .9
+            learning_rate=1e-3,
+            gamma = .9,
+            tensorboard_log="./healthcare/"
             )
-model.learn(total_timesteps=100000)
-model.save("healthcare")
 # model.load("healthcare")
+model.learn(total_timesteps=1000000)
+model.save("healthcare")
 obs = env.reset()
 done = False
 while not done:
