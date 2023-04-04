@@ -2,49 +2,48 @@ import gym
 from gym import spaces
 import numpy as np
 
+NUM_AGENTS = 4
+
 class MultiAgentEnv(gym.Env):
     def __init__(self):
-        # Define the observation space for the agents
-        self.observation_space = spaces.Box(low=-1, high=1, shape=(2,), dtype=np.float32)
-        
-        # Define the action space for the agents
-        self.action_space = spaces.Discrete(2)
-        
-        # Define the number of agents
-        self.num_agents = 2
-        
-        # Define the initial state of the environment
-        self.state = np.zeros((self.num_agents, 2))
-        
-    def step(self, actions):
-        # Update the state of the environment based on the actions of the agents
-        self.state[0][0] += actions[0]
-        self.state[1][0] -= actions[1]
-        
-        # Calculate the reward for each agent based on the state of the environment
-        reward = [0, 0]
-        if self.state[0][0] > self.state[1][0]:
-            reward[0] = 1
-            reward[1] = -1
-        elif self.state[0][0] < self.state[1][0]:
-            reward[0] = -1
-            reward[1] = 1
-        
-        # Return the observations, rewards, and whether the episode is done
-        observations = self.state
-        done = False
-        return observations, reward, done, {}
-    
+        # Define observation space and action space for each agent
+        self.observation_space = [spaces.Box(low=-10, high=10, shape=(2,), dtype=np.float32) for _ in range(NUM_AGENTS)]
+        self.action_space = [spaces.Discrete(2) for _ in range(NUM_AGENTS)]
+
     def reset(self):
-        # Reset the state of the environment to its initial state
-        self.state = np.zeros((self.num_agents, 2))
-        return self.state
-    
-class MultiAgent:
-    def __init__(self, observation_space, action_space):
-        self.observation_space = observation_space
-        self.action_space = action_space
-    
-    def select_action(self, observation):
-        # Select an action based on the observation received from the environment
-        return self.action_space.sample()
+        # Initialize environment and return initial observations
+        obs = [np.random.uniform(low=-10, high=10, size=(2,)) for _ in range(NUM_AGENTS)]
+        self.period = 0
+        return obs
+
+    def step(self, actions):
+        # Take actions for each agent and return next observations, rewards, and done flag
+        obs = []
+        rewards = []
+        # Firm observes sell-off value
+
+        # firm makes decision to exit and invest
+        
+        # entrant obeserves entry cost and makes entry decisions
+        # incumbent firsm compete in market and receive profit
+        # exiting firms receive sell-off values
+        # investment shock outcomes are determined
+        # new entrants enter
+        # industry takes on new state
+        for i in range(NUM_AGENTS):
+            obs_i = self.observation_space[i].sample()
+            obs.append(obs_i)
+            reward_i = self.get_profit(i, actions)
+            rewards.append(reward_i)
+        done = False
+        return obs, rewards, done, {}
+
+    def get_profit(self, agent_idx: int, actions):
+        return actions[agent_idx]/np.sum(actions)
+
+    def _next_observation(self):
+        ...
+
+    def render(self, mode='human'):
+        # Render the current state of the environment, if desired
+        pass

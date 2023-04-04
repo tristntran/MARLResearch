@@ -25,7 +25,7 @@
       "justMyCode": false,
       "console": "internalConsole",
       "env": {
-        "PYTHONPATH": "/workspaces/MARLResearch/src:/workspaces/MARLResearch"
+        "PYTHONPATH": "/workspaces/MARLResearch/src:/workspaces/MARLResearch:./src"
       }
     },
     {
@@ -35,7 +35,7 @@
       "program": "${file}",
       "console": "integratedTerminal",
       "env": {
-        "PYTHONPATH": "/workspaces/MARLResearch/src:/workspaces/MARLResearch"
+        "PYTHONPATH": "/workspaces/MARLResearch/src:/workspaces/MARLResearch:./src"
       }
     },
     {
@@ -45,7 +45,7 @@
       "program": "${file}",
       "console": "externalTerminal",
       "env": {
-        "PYTHONPATH": "/workspaces/MARLResearch/src:/workspaces/MARLResearch"
+        "PYTHONPATH": "/workspaces/MARLResearch/src:/workspaces/MARLResearch:./src"
       }
     }
   ]

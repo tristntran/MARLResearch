@@ -10,7 +10,7 @@ register(
 env = gym.make("esi_healthcareEnv-v0")
 model = PPO("MlpPolicy", env, verbose=1,
             learning_rate=1e-3,
-            gamma = .9,
+            gamma = .99997,
             tensorboard_log="./healthcare/"
             )
 # model.load("healthcare")
