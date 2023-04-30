@@ -1,7 +1,8 @@
+gym==0.21.0
 AutoROM.accept-rom-license
-gym
-stable-baselines3
+setuptools==66
+stable-baselines3 == 1.6.2
 stable-baselines3[extra]
-rl_zoo3
-numpy
+numpy==1.23.5
 tensorflow
+ray==2.3.1
